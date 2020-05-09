@@ -8,7 +8,7 @@ Naive inversion of control container for Deno based on [InversifyJS](https://git
 ## Usage
 
 ```
-import { injectable, inject, Container } from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/src/yfisrevni.ts"
+import { injectable, inject, Container } from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/mod.ts"
 ```
 
 > :warning: **Important!** YfisrevniJS requires the `experimentalDecorators` and `emitDecoratorMetadata` compilation options in your `tsconfig.json` file.
@@ -27,7 +27,7 @@ import { injectable, inject, Container } from "https://raw.githubusercontent.com
 
 ## The Basics
 
-Let’s take a look at the basic usage and APIs of InversifyJS with TypeScript:
+Let’s take a look at the basic usage and APIs of YfisrevniJS with TypeScript:
 
 ### Step 1: Declare your interfaces and types
 
@@ -52,7 +52,7 @@ export interface ThrowableWeapon {
 }
 ```
 
-InversifyJS need to use the type as identifiers at runtime. We use symbols as identifiers but you can also use classes and or string literals.
+YfisrevniJS need to use the type as identifiers at runtime. We use symbols as identifiers but you can also use classes and or string literals.
 
 ```ts
 // file types.ts
@@ -66,7 +66,7 @@ const TYPES = {
 export { TYPES }
 ```
 
-> **Note**: It is recommended to use Symbols but InversifyJS also support the usage of Classes and string literals (please refer to the features section to learn more).
+> **Note**: It is recommended to use Symbols but YfisrevniJS also support the usage of Classes and string literals (please refer to the features section to learn more).
 
 ### Step 2: Declare dependencies using the `@injectable` & `@inject` decorators
 
@@ -175,9 +175,6 @@ expect(ninja.sneak()).eql("hit!") // true
 ```
 
 As we can see the `Katana` and `Shuriken` were successfully resolved and injected into `Ninja`.
-
-InversifyJS supports ES5 and ES6 and can work without TypeScript.
-Head to the [**JavaScript example**](https://github.com/inversify/InversifyJS/blob/master/wiki/basic_js_example.md) to learn more!
 
 [ghw badge]: https://img.shields.io/github/workflow/status/DanielRamosAcosta/YfisrevniJS/ci
 [ghw link]: https://github.com/DanielRamosAcosta/YfisrevniJS/actions?query=workflow%3Aci

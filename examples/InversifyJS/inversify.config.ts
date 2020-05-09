@@ -1,4 +1,4 @@
-import { Container } from "../../src/yfisrevni.ts"
+import { Container } from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/mod.ts"
 import { TYPES } from "./types.ts"
 import { Warrior, Weapon, ThrowableWeapon } from "./interfaces.ts"
 import { Ninja, Katana, Shuriken } from "./entities.ts"

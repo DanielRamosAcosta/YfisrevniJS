@@ -1,6 +1,9 @@
 // file entities.ts
 
-import { injectable, inject } from "../../src/yfisrevni.ts"
+import {
+  injectable,
+  inject,
+} from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/mod.ts"
 import { Weapon, ThrowableWeapon, Warrior } from "./interfaces.ts"
 import { TYPES } from "./types.ts"
 

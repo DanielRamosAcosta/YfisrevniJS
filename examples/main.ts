@@ -2,7 +2,7 @@ import {
   injectable,
   inject,
   Container,
-} from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/src/yfisrevni.ts"
+} from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/mod.ts"
 
 const GREETER_SYMBOL = Symbol("Greeter")
 
