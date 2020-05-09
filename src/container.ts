@@ -9,6 +9,11 @@ export class Container {
     return {
       to: (TheClass: ClassOf<T>) => {
         this.mapper.set(serviceIdentifier, TheClass)
+
+        return {
+          whenTargetNamed(target: string) {},
+          whenParentNamed(target: string) {},
+        }
       },
     }
   }

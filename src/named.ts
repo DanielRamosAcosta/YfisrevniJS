@@ -1,6 +1,6 @@
 import { PARAMETERS_SYMBOLS_KEY } from "./constants.ts"
 
-export function inject(serviceIdentifier: Symbol) {
+export function named(serviceIdentifier: symbol | string) {
   return function (target: any, targetKey: string, index: number) {
     if (!target[PARAMETERS_SYMBOLS_KEY]) {
       target[PARAMETERS_SYMBOLS_KEY] = []
