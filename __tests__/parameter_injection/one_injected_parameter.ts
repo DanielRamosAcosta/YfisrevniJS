@@ -1,7 +1,7 @@
+import { expect } from "https://raw.githubusercontent.com/DanielRamosAcosta/expect/upgrade-std/mod.ts"
 import { Container, injectable, inject } from "../../mod.ts"
 import { GREETER_SYMBOL, Greeter } from "./example_classes/greeter.ts"
 import { GreeterEnglish } from "./example_classes/greeter_english.ts"
-import { expect } from "../expect.ts"
 
 Deno.test({
   name: "single parameter injection",
