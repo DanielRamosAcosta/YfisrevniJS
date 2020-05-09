@@ -1,0 +1,31 @@
+import { Container, injectable, inject } from "../../src/yfisrevni.ts"
+import { expect } from "../expect.ts"
+import { GREETER_SYMBOL, Greeter } from "./example_classes/greeter.ts"
+import { GreeterEnglish } from "./example_classes/greeter_english.ts"
+
+Deno.test("two parameters, just one injected", () => {
+  const EXAMPLE_SERVICE_SYMBOL = Symbol.for("ExampleService")
+
+  @injectable()
+  class ExampleService {
+    private greeter: Greeter
+    private isProduction: boolean
+
+    public constructor(@inject(GREETER_SYMBOL) greeter: Greeter, isProduction: boolean) {
+      this.greeter = greeter
+      this.isProduction = isProduction
+    }
+
+    public executeGreeter() {
+      return this.greeter.greet()
+    }
+  }
+
+  const myContainer = new Container()
+  myContainer.bind<Greeter>(GREETER_SYMBOL).to(GreeterEnglish)
+  myContainer.bind<ExampleService>(EXAMPLE_SERVICE_SYMBOL).to(ExampleService)
+
+  const exampleService = myContainer.get<ExampleService>(EXAMPLE_SERVICE_SYMBOL)
+
+  expect(exampleService.executeGreeter()).toEqual("Hello!")
+})
