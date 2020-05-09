@@ -12,4 +12,4 @@ jobs:
         with:
           deno-version: 1.0.0-rc1
       - run: |
-          deno test -c tsconfig.json __tests__/**/*.ts
+          deno test -c tsconfig.json -A
