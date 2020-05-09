@@ -1,4 +1,4 @@
-import { injectable } from "../../../src/yfisrevni.ts"
+import { injectable } from "../../../mod.ts"
 import { Flyable } from "./flyable.ts"
 
 @injectable()

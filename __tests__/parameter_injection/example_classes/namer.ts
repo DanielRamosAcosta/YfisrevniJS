@@ -1,4 +1,4 @@
-import { injectable, inject } from "../../../src/yfisrevni.ts"
+import { injectable, inject } from "../../../mod.ts"
 import { Greeter, GREETER_SYMBOL } from "./greeter.ts"
 
 export const NAMER_SYMBOL = Symbol("Namer")

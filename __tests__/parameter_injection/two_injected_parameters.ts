@@ -1,4 +1,4 @@
-import { Container, injectable, inject } from "../../src/yfisrevni.ts"
+import { Container, injectable, inject } from "../../mod.ts"
 import { expect } from "../expect.ts"
 import { Greeter, GREETER_SYMBOL } from "./example_classes/greeter.ts"
 import { Flyable, FLYABLE_SYMBOL } from "./example_classes/flyable.ts"
