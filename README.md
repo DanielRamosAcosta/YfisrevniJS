@@ -1,14 +1,18 @@
 # YfisrevniJS
 
 [![][ghw badge]][ghw link]
-[![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/src/yfisrevni.ts)
+[![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/mod.ts)
 
 Naive inversion of control container for Deno based on [InversifyJS](https://github.com/inversify/InversifyJS)
 
 ## Usage
 
-```
-import { injectable, inject, Container } from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/mod.ts"
+```ts
+import {
+  injectable,
+  inject,
+  Container,
+} from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/mod.ts"
 ```
 
 > :warning: **Important!** YfisrevniJS requires the `experimentalDecorators` and `emitDecoratorMetadata` compilation options in your `tsconfig.json` file.
