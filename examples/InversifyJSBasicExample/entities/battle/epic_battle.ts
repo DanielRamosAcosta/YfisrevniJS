@@ -6,8 +6,8 @@ import TAG from "../../constants/tags.ts"
 
 @injectable()
 export class EpicBattle implements Battle {
-  private warrior1: Warrior
-  private warrior2: Warrior
+  public warrior1: Warrior
+  public warrior2: Warrior
 
   constructor(
     @inject(SERVICE_IDENTIFIER.WARRIOR) @named(TAG.CHINESE) warrior1: Warrior,
