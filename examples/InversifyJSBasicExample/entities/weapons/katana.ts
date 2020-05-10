@@ -1,4 +1,4 @@
-import { injectable } from "../../../../mod.ts"
+import { injectable } from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/mod.ts"
 
 import { Weapon } from "../../interfaces/index.ts"
 

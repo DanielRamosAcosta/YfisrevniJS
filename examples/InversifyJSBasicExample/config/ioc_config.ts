@@ -1,4 +1,4 @@
-import { Container } from "../../../mod.ts"
+import { Container } from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/mod.ts"
 
 import { Battle, Weapon, Warrior } from "../interfaces/index.ts"
 

@@ -81,8 +81,10 @@ When a class has a dependency on an interface we also need to use the `@inject` 
 ```ts
 // file entities.ts
 
-import { injectable, inject } from "inversify"
-import "reflect-metadata"
+import {
+  injectable,
+  inject,
+} from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/mod.ts"
 import { Weapon, ThrowableWeapon, Warrior } from "./interfaces"
 import { TYPES } from "./types"
 
@@ -142,13 +144,13 @@ class Ninja implements Warrior {
 
 ### Step 3: Create and configure a Container
 
-We recommend to do this in a file named `inversify.config.ts`. This is the only place in which there is some coupling.
+We recommend to do this in a file named `yfisrevni.config.ts`. This is the only place in which there is some coupling.
 In the rest of your application your classes should be free of references to other classes.
 
 ```ts
-// file inversify.config.ts
+// file yfisrevni.config.ts
 
-import { Container } from "inversify"
+import { Container } from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/mod.ts"
 import { TYPES } from "./types"
 import { Warrior, Weapon, ThrowableWeapon } from "./interfaces"
 import { Ninja, Katana, Shuriken } from "./entities"
@@ -168,7 +170,7 @@ Remember that you should do this only in your [composition root](http://blog.plo
 to avoid the [service locator anti-pattern](http://blog.ploeh.dk/2010/02/03/ServiceLocatorisanAnti-Pattern/).
 
 ```ts
-import { myContainer } from "./inversify.config"
+import { myContainer } from "./yfisrevni.config"
 import { TYPES } from "./types"
 import { Warrior } from "./interfaces"
 

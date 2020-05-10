@@ -1,5 +1,8 @@
-import { inject, injectable, named } from "../../../../mod.ts"
-
+import {
+  inject,
+  injectable,
+  named,
+} from "https://raw.githubusercontent.com/DanielRamosAcosta/YfisrevniJS/master/mod.ts"
 import { Battle, Warrior } from "../../interfaces/index.ts"
 import SERVICE_IDENTIFIER from "../../constants/identifiers.ts"
 import TAG from "../../constants/tags.ts"

@@ -3,7 +3,7 @@
  */
 
 import { expect } from "https://raw.githubusercontent.com/allain/expect/master/mod.ts"
-import { myContainer } from "./inversify.config.ts"
+import { myContainer } from "./yfisrevni.config.ts"
 import { TYPES } from "./types.ts"
 import { Warrior } from "./interfaces.ts"
 
