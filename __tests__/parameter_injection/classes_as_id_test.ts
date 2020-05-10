@@ -1,4 +1,3 @@
-import "../../src/metadata.ts"
 import { expect } from "https://raw.githubusercontent.com/allain/expect/master/mod.ts"
 import { Container, injectable } from "../../mod.ts"
 import { GreeterEnglish } from "./example_classes/greeter_english.ts"
