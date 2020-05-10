@@ -1,4 +1,4 @@
-import { PARAMETERS_NAMES_SYMBOLS_KEY } from "./constants.ts"
+import { PARAMETERS_NAMES_SYMBOLS_KEY } from "../constants/metadata_keys.ts"
 
 export function named(serviceIdentifier: symbol | string) {
   return function (target: any, targetKey?: string, index?: number) {

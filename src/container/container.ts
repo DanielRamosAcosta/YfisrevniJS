@@ -1,19 +1,7 @@
-import { interfaces } from "./interfaces/interfaces.ts"
-import { PARAMETERS_NAMES_SYMBOLS_KEY, DESIGN_PARAMTYPES } from "./constants.ts"
-import { BindingInWhenOnSyntax } from "./syntax/binding_in_when_on_syntax.ts"
-
-function serviceIdentifierToSymbol<T>(serviceIdentifier: interfaces.ServiceIdentifier<T>) {
-  if (typeof serviceIdentifier === "symbol") {
-    return serviceIdentifier
-  }
-  if (typeof serviceIdentifier === "string") {
-    return Symbol.for(serviceIdentifier)
-  }
-  if (typeof serviceIdentifier === "function") {
-    return Symbol.for(serviceIdentifier.name)
-  }
-  throw new Error(`Unknown service identifier ${serviceIdentifier}`)
-}
+import { interfaces } from "../interfaces/interfaces.ts"
+import { PARAMETERS_NAMES_SYMBOLS_KEY, DESIGN_PARAMTYPES } from "../constants/metadata_keys.ts"
+import { BindingInWhenOnSyntax } from "../syntax/binding_in_when_on_syntax.ts"
+import { serviceIdentifierToSymbol } from "../utils/service_identifier_to_symbol.ts"
 
 export class Container implements interfaces.Container {
   public id: number = 0
@@ -25,30 +13,30 @@ export class Container implements interfaces.Container {
   private parentNameMapper = new Map<interfaces.ServiceIdentifier<any>, any>()
 
   bind<T>(serviceIdentifier: interfaces.ServiceIdentifier<T>): interfaces.BindingToSyntax<T> {
-    let symbolIdentifier = serviceIdentifierToSymbol(serviceIdentifier)
+    const serviceSymbolId = serviceIdentifierToSymbol(serviceIdentifier)
 
     // @ts-ignore
     const newLocal: interfaces.BindingToSyntax<T> = {
       to: (TheClass: interfaces.Newable<T>): interfaces.BindingInWhenOnSyntax<T> => {
-        if (!this.mapper.get(symbolIdentifier)) {
-          this.mapper.set(symbolIdentifier, TheClass)
+        if (!this.mapper.get(serviceSymbolId)) {
+          this.mapper.set(serviceSymbolId, TheClass)
         }
 
         return new BindingInWhenOnSyntax<T>(
           this.targetNameMapper,
           this.parentNameMapper,
-          symbolIdentifier,
+          serviceSymbolId,
           TheClass,
         )
       },
       toSelf: (): interfaces.BindingInWhenOnSyntax<T> => {
-        if (!this.mapper.get(symbolIdentifier)) {
-          this.mapper.set(symbolIdentifier, serviceIdentifier)
+        if (!this.mapper.get(serviceSymbolId)) {
+          this.mapper.set(serviceSymbolId, serviceIdentifier)
         }
         return new BindingInWhenOnSyntax<T>(
           this.targetNameMapper,
           this.parentNameMapper,
-          symbolIdentifier,
+          serviceSymbolId,
           serviceIdentifier as interfaces.Newable<T>,
         )
       },
@@ -88,24 +76,22 @@ export class Container implements interfaces.Container {
   }
 
   get<T>(
-    serviceIdentifier: symbol | Function,
+    serviceIdentifier: interfaces.ServiceIdentifier<T>,
     {
       name = null,
       parentName: parentTag = null,
     }: { name?: symbol | null; parentName?: symbol | null } = {},
   ): T {
-    if (typeof serviceIdentifier === "function") {
-      serviceIdentifier = Symbol.for(serviceIdentifier.name)
-    }
+    const serviceSymbolId = serviceIdentifierToSymbol(serviceIdentifier)
 
-    let TargetClass = this.mapper.get(serviceIdentifier)
+    let TargetClass = this.mapper.get(serviceSymbolId)
 
     if (name) {
-      TargetClass = this.targetNameMapper.get(serviceIdentifier).get(name)
+      TargetClass = this.targetNameMapper.get(serviceSymbolId).get(name)
     }
 
     if (parentTag) {
-      TargetClass = this.parentNameMapper.get(serviceIdentifier).get(parentTag)
+      TargetClass = this.parentNameMapper.get(serviceSymbolId).get(parentTag)
     }
 
     const dependencies = TargetClass[DESIGN_PARAMTYPES] as interfaces.ServiceIdentifier<any>[]
@@ -141,6 +127,7 @@ export class Container implements interfaces.Container {
   ): T {
     throw new Error("Unimplmented method getNamed")
   }
+
   getTagged<T>(
     serviceIdentifier: interfaces.ServiceIdentifier<T>,
     key: string | number | symbol,
@@ -148,9 +135,11 @@ export class Container implements interfaces.Container {
   ): T {
     throw new Error("Unimplmented method getTagged")
   }
+
   getAll<T>(serviceIdentifier: interfaces.ServiceIdentifier<T>): T[] {
     throw new Error("Unimplmented method getAll")
   }
+
   getAllTagged<T>(
     serviceIdentifier: interfaces.ServiceIdentifier<T>,
     key: string | number | symbol,
@@ -158,36 +147,46 @@ export class Container implements interfaces.Container {
   ): T[] {
     throw new Error("Unimplmented method getAllTagged")
   }
+
   getAllNamed<T>(
     serviceIdentifier: interfaces.ServiceIdentifier<T>,
     named: string | number | symbol,
   ): T[] {
     throw new Error("Unimplmented method getAllNamed")
   }
+
   resolve<T>(constructorFunction: interfaces.Newable<T>): T {
     throw new Error("Unimplmented method resolve")
   }
+
   load(...modules: interfaces.ContainerModule[]): void {
     throw new Error("Unimplmented method load")
   }
+
   loadAsync(...modules: interfaces.AsyncContainerModule[]): Promise<void> {
     throw new Error("Unimplmented method loadAsync")
   }
+
   unload(...modules: interfaces.ContainerModule[]): void {
     throw new Error("Unimplmented method unload")
   }
+
   applyCustomMetadataReader(metadataReader: interfaces.MetadataReader): void {
     throw new Error("Unimplmented method applyCustomMetadataReader")
   }
+
   applyMiddleware(...middleware: interfaces.Middleware[]): void {
     throw new Error("Unimplmented method applyMiddleware")
   }
+
   snapshot(): void {
     throw new Error("Unimplmented method snapshot")
   }
+
   restore(): void {
     throw new Error("Unimplmented method restore")
   }
+
   createChild(): Container {
     throw new Error("Unimplmented method createChild")
   }

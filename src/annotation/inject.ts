@@ -1,12 +1,15 @@
-import { DESIGN_PARAMTYPES } from "./constants.ts"
+import { DESIGN_PARAMTYPES } from "../constants/metadata_keys.ts"
+import { serviceIdentifierToSymbol } from "../utils/service_identifier_to_symbol.ts"
 
-export function inject(serviceIdentifier: symbol) {
+export function inject(serviceIdentifier: symbol | string) {
+  const serviceSymbolId = serviceIdentifierToSymbol(serviceIdentifier)
+
   return function (target: any, targetKey?: string, index?: number) {
     if (targetKey != null) {
-      return injectMemberParameter(serviceIdentifier, target, targetKey)
+      return injectMemberParameter(serviceSymbolId, target, targetKey)
     }
     if (index != null) {
-      return injectConstructorParameter(serviceIdentifier, target, index)
+      return injectConstructorParameter(serviceSymbolId, target, index)
     }
 
     throw new Error("Unimplemented use case")
