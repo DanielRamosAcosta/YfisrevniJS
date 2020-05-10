@@ -1,7 +1,7 @@
 export const GREETER_SYMBOL = Symbol("Greeter")
 
 export const GREETER_TAGS = {
-  UnitedKingdom: Symbol("UnitedKingdom"),
+  USA: Symbol("USA"),
   Spain: Symbol("Spain"),
 }
 

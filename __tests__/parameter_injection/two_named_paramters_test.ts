@@ -9,19 +9,19 @@ Deno.test("two named parameters injection", () => {
 
   @injectable()
   class ExampleService {
-    private greeterUnitedKingdom: Greeter
+    private greeterUSA: Greeter
     private greeterSpain: Greeter
 
     public constructor(
-      @inject(GREETER_SYMBOL) @named(GREETER_TAGS.UnitedKingdom) greeterUnitedKingdom: Greeter,
+      @inject(GREETER_SYMBOL) @named(GREETER_TAGS.USA) greeterUSA: Greeter,
       @inject(GREETER_SYMBOL) @named(GREETER_TAGS.Spain) greeterSpain: Greeter,
     ) {
-      this.greeterUnitedKingdom = greeterUnitedKingdom
+      this.greeterUSA = greeterUSA
       this.greeterSpain = greeterSpain
     }
 
-    public executeGreeterUnitedKingdom() {
-      return this.greeterUnitedKingdom.greet()
+    public executeGreeterUSA() {
+      return this.greeterUSA.greet()
     }
 
     public executeGreeterSpain() {
@@ -30,15 +30,12 @@ Deno.test("two named parameters injection", () => {
   }
 
   const myContainer = new Container()
-  myContainer
-    .bind<Greeter>(GREETER_SYMBOL)
-    .to(GreeterEnglish)
-    .whenTargetNamed(GREETER_TAGS.UnitedKingdom)
+  myContainer.bind<Greeter>(GREETER_SYMBOL).to(GreeterEnglish).whenTargetNamed(GREETER_TAGS.USA)
   myContainer.bind<Greeter>(GREETER_SYMBOL).to(GreeterSpanish).whenTargetNamed(GREETER_TAGS.Spain)
   myContainer.bind<ExampleService>(EXAMPLE_SERVICE_SYMBOL).to(ExampleService)
 
   const exampleService = myContainer.get<ExampleService>(EXAMPLE_SERVICE_SYMBOL)
 
-  expect(exampleService.executeGreeterUnitedKingdom()).toEqual("Hello!")
+  expect(exampleService.executeGreeterUSA()).toEqual("Hello!")
   expect(exampleService.executeGreeterSpain()).toEqual("Hola!")
 })
