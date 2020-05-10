@@ -4,6 +4,6 @@
     "module": "ESNext",
     "strict": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": true
   }
 }

@@ -1,4 +1,4 @@
-import { PARAMETERS_SYMBOLS_KEY, MEMBERS_SYMBOLS_KEY } from "./constants.ts"
+import { DESIGN_PARAMTYPES } from "./constants.ts"
 
 export function inject(serviceIdentifier: symbol) {
   return function (target: any, targetKey?: string, index?: number) {
@@ -14,15 +14,15 @@ export function inject(serviceIdentifier: symbol) {
 }
 
 function injectConstructorParameter(serviceIdentifier: symbol, target: any, index: number) {
-  if (!target[PARAMETERS_SYMBOLS_KEY]) {
-    target[PARAMETERS_SYMBOLS_KEY] = []
+  if (!target[DESIGN_PARAMTYPES]) {
+    target[DESIGN_PARAMTYPES] = []
   }
 
-  while (target[PARAMETERS_SYMBOLS_KEY].length < index) {
-    target[PARAMETERS_SYMBOLS_KEY].push(null)
+  while (target[DESIGN_PARAMTYPES].length < index) {
+    target[DESIGN_PARAMTYPES].push(null)
   }
 
-  target[PARAMETERS_SYMBOLS_KEY][index] = serviceIdentifier
+  target[DESIGN_PARAMTYPES][index] = serviceIdentifier
 
   return target
 }
