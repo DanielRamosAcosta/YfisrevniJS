@@ -1,3 +1,3 @@
 export const decorate = (fn: Function, target: any, index?: number) => {
-  fn(target, undefined, index)
-}
+  fn(target, undefined, index);
+};

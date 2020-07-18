@@ -1,25 +1,32 @@
-import { interfaces } from "../interfaces/interfaces.ts"
-import { PARAMETERS_NAMES_SYMBOLS_KEY, DESIGN_PARAMTYPES } from "../constants/metadata_keys.ts"
-import { BindingInWhenOnSyntax } from "../syntax/binding_in_when_on_syntax.ts"
-import { serviceIdentifierToSymbol } from "../utils/service_identifier_to_symbol.ts"
+import { interfaces } from "../interfaces/interfaces.ts";
+import {
+  PARAMETERS_NAMES_SYMBOLS_KEY,
+  DESIGN_PARAMTYPES,
+} from "../constants/metadata_keys.ts";
+import { BindingInWhenOnSyntax } from "../syntax/binding_in_when_on_syntax.ts";
+import { serviceIdentifierToSymbol } from "../utils/service_identifier_to_symbol.ts";
 
 export class Container implements interfaces.Container {
-  public id: number = 0
-  public parent: Container | null = null
-  public options: interfaces.ContainerOptions = {}
+  public id: number = 0;
+  public parent: Container | null = null;
+  public options: interfaces.ContainerOptions = {};
 
-  private mapper = new Map<interfaces.ServiceIdentifier<any>, any>()
-  private targetNameMapper = new Map<interfaces.ServiceIdentifier<any>, any>()
-  private parentNameMapper = new Map<interfaces.ServiceIdentifier<any>, any>()
+  private mapper = new Map<interfaces.ServiceIdentifier<any>, any>();
+  private targetNameMapper = new Map<interfaces.ServiceIdentifier<any>, any>();
+  private parentNameMapper = new Map<interfaces.ServiceIdentifier<any>, any>();
 
-  bind<T>(serviceIdentifier: interfaces.ServiceIdentifier<T>): interfaces.BindingToSyntax<T> {
-    const serviceSymbolId = serviceIdentifierToSymbol(serviceIdentifier)
+  bind<T>(
+    serviceIdentifier: interfaces.ServiceIdentifier<T>,
+  ): interfaces.BindingToSyntax<T> {
+    const serviceSymbolId = serviceIdentifierToSymbol(serviceIdentifier);
 
     // @ts-ignore
     const newLocal: interfaces.BindingToSyntax<T> = {
-      to: (TheClass: interfaces.Newable<T>): interfaces.BindingInWhenOnSyntax<T> => {
+      to: (
+        TheClass: interfaces.Newable<T>,
+      ): interfaces.BindingInWhenOnSyntax<T> => {
         if (!this.mapper.get(serviceSymbolId)) {
-          this.mapper.set(serviceSymbolId, TheClass)
+          this.mapper.set(serviceSymbolId, TheClass);
         }
 
         return new BindingInWhenOnSyntax<T>(
@@ -27,44 +34,46 @@ export class Container implements interfaces.Container {
           this.parentNameMapper,
           serviceSymbolId,
           TheClass,
-        )
+        );
       },
       toSelf: (): interfaces.BindingInWhenOnSyntax<T> => {
         if (!this.mapper.get(serviceSymbolId)) {
-          this.mapper.set(serviceSymbolId, serviceIdentifier)
+          this.mapper.set(serviceSymbolId, serviceIdentifier);
         }
         return new BindingInWhenOnSyntax<T>(
           this.targetNameMapper,
           this.parentNameMapper,
           serviceSymbolId,
           serviceIdentifier as interfaces.Newable<T>,
-        )
+        );
       },
-    }
-    return newLocal
+    };
+    return newLocal;
   }
 
-  rebind<T>(serviceIdentifier: interfaces.ServiceIdentifier<T>): interfaces.BindingToSyntax<T> {
-    throw new Error("Unimplemented method rebind")
+  rebind<T>(
+    serviceIdentifier: interfaces.ServiceIdentifier<T>,
+  ): interfaces.BindingToSyntax<T> {
+    throw new Error("Unimplemented method rebind");
   }
 
   unbind(serviceIdentifier: interfaces.ServiceIdentifier<any>): void {
-    throw new Error("Unimplemented method unbind")
+    throw new Error("Unimplemented method unbind");
   }
 
   unbindAll(): void {
-    throw new Error("Unimplemented method unbindAll")
+    throw new Error("Unimplemented method unbindAll");
   }
 
   isBound(serviceIdentifier: interfaces.ServiceIdentifier<any>): boolean {
-    throw new Error("Unimplemented method isBound")
+    throw new Error("Unimplemented method isBound");
   }
 
   isBoundNamed(
     serviceIdentifier: interfaces.ServiceIdentifier<any>,
     named: string | number | symbol,
   ): boolean {
-    throw new Error("Unimplemented method isBoundNamed")
+    throw new Error("Unimplemented method isBoundNamed");
   }
 
   isBoundTagged(
@@ -72,7 +81,7 @@ export class Container implements interfaces.Container {
     key: string | number | symbol,
     value: any,
   ): boolean {
-    throw new Error("Unimplemented method isBoundTagged")
+    throw new Error("Unimplemented method isBoundTagged");
   }
 
   get<T>(
@@ -82,26 +91,35 @@ export class Container implements interfaces.Container {
       parentName: parentTag = null,
     }: { name?: symbol | null; parentName?: symbol | null } = {},
   ): T {
-    const serviceSymbolId = serviceIdentifierToSymbol(serviceIdentifier)
+    const serviceSymbolId = serviceIdentifierToSymbol(serviceIdentifier);
 
-    let TargetClass = this.mapper.get(serviceSymbolId)
+    let TargetClass = this.mapper.get(serviceSymbolId);
 
     if (name) {
-      TargetClass = this.targetNameMapper.get(serviceSymbolId).get(name)
+      TargetClass = this.targetNameMapper.get(serviceSymbolId).get(name);
     }
 
     if (parentTag) {
-      TargetClass = this.parentNameMapper.get(serviceSymbolId).get(parentTag)
+      TargetClass = this.parentNameMapper.get(serviceSymbolId).get(parentTag);
     }
 
-    const dependencies = TargetClass[DESIGN_PARAMTYPES] as interfaces.ServiceIdentifier<any>[]
-    const names = TargetClass[PARAMETERS_NAMES_SYMBOLS_KEY] as symbol[] | undefined
+    return this.resolveDendencies(TargetClass, { name });
+  }
+
+  resolveDendencies(TargetClass: any, {
+    name = null,
+  }: { name?: symbol | null } = {}) {
+    const dependencies =
+      TargetClass[DESIGN_PARAMTYPES] as interfaces.ServiceIdentifier<any>[];
+    const names = TargetClass[PARAMETERS_NAMES_SYMBOLS_KEY] as
+      | symbol[]
+      | undefined;
 
     if (!dependencies) {
-      return new TargetClass()
+      return new TargetClass();
     }
 
-    const instances: any[] = []
+    const instances: any[] = [];
 
     dependencies.forEach((parameterKey, index) => {
       if (typeof parameterKey === "symbol") {
@@ -110,22 +128,27 @@ export class Container implements interfaces.Container {
             name: names ? names[index] : null,
             parentName: name,
           }),
-        )
-        return
+        );
+        return;
+      }
+      if (typeof parameterKey === "function") {
+        instances.push(this.resolveDendencies(parameterKey));
+        return;
       }
 
+      console.warn("Unimplemented use case");
       // @ts-ignore
-      instances.push(new parameterKey())
-    })
+      instances.push(new parameterKey());
+    });
 
-    return new TargetClass(...instances)
+    return new TargetClass(...instances);
   }
 
   getNamed<T>(
     serviceIdentifier: interfaces.ServiceIdentifier<T>,
     named: string | number | symbol,
   ): T {
-    throw new Error("Unimplmented method getNamed")
+    throw new Error("Unimplmented method getNamed");
   }
 
   getTagged<T>(
@@ -133,11 +156,11 @@ export class Container implements interfaces.Container {
     key: string | number | symbol,
     value: any,
   ): T {
-    throw new Error("Unimplmented method getTagged")
+    throw new Error("Unimplmented method getTagged");
   }
 
   getAll<T>(serviceIdentifier: interfaces.ServiceIdentifier<T>): T[] {
-    throw new Error("Unimplmented method getAll")
+    throw new Error("Unimplmented method getAll");
   }
 
   getAllTagged<T>(
@@ -145,49 +168,49 @@ export class Container implements interfaces.Container {
     key: string | number | symbol,
     value: any,
   ): T[] {
-    throw new Error("Unimplmented method getAllTagged")
+    throw new Error("Unimplmented method getAllTagged");
   }
 
   getAllNamed<T>(
     serviceIdentifier: interfaces.ServiceIdentifier<T>,
     named: string | number | symbol,
   ): T[] {
-    throw new Error("Unimplmented method getAllNamed")
+    throw new Error("Unimplmented method getAllNamed");
   }
 
   resolve<T>(constructorFunction: interfaces.Newable<T>): T {
-    throw new Error("Unimplmented method resolve")
+    throw new Error("Unimplmented method resolve");
   }
 
   load(...modules: interfaces.ContainerModule[]): void {
-    throw new Error("Unimplmented method load")
+    throw new Error("Unimplmented method load");
   }
 
   loadAsync(...modules: interfaces.AsyncContainerModule[]): Promise<void> {
-    throw new Error("Unimplmented method loadAsync")
+    throw new Error("Unimplmented method loadAsync");
   }
 
   unload(...modules: interfaces.ContainerModule[]): void {
-    throw new Error("Unimplmented method unload")
+    throw new Error("Unimplmented method unload");
   }
 
   applyCustomMetadataReader(metadataReader: interfaces.MetadataReader): void {
-    throw new Error("Unimplmented method applyCustomMetadataReader")
+    throw new Error("Unimplmented method applyCustomMetadataReader");
   }
 
   applyMiddleware(...middleware: interfaces.Middleware[]): void {
-    throw new Error("Unimplmented method applyMiddleware")
+    throw new Error("Unimplmented method applyMiddleware");
   }
 
   snapshot(): void {
-    throw new Error("Unimplmented method snapshot")
+    throw new Error("Unimplmented method snapshot");
   }
 
   restore(): void {
-    throw new Error("Unimplmented method restore")
+    throw new Error("Unimplmented method restore");
   }
 
   createChild(): Container {
-    throw new Error("Unimplmented method createChild")
+    throw new Error("Unimplmented method createChild");
   }
 }

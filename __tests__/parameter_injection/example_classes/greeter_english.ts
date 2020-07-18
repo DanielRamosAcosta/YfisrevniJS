@@ -1,9 +1,9 @@
-import { injectable } from "../../../mod.ts"
-import { Greeter } from "./greeter.ts"
+import { injectable } from "../../../mod.ts";
+import { Greeter } from "./greeter.ts";
 
 @injectable()
 export class GreeterEnglish implements Greeter {
   public greet() {
-    return "Hello!"
+    return "Hello!";
   }
 }

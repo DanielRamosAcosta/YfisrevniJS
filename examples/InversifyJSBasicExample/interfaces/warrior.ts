@@ -1,6 +1,6 @@
-import { Weapon } from "./weapon.ts"
+import { Weapon } from "./weapon.ts";
 
 export interface Warrior {
-  name: string
-  weapon: Weapon
+  name: string;
+  weapon: Weapon;
 }

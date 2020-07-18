@@ -1,17 +1,17 @@
-import { injectable, inject } from "../../../mod.ts"
-import { Greeter, GREETER_SYMBOL } from "./greeter.ts"
+import { injectable, inject } from "../../../mod.ts";
+import { Greeter, GREETER_SYMBOL } from "./greeter.ts";
 
-export const NAMER_SYMBOL = Symbol("Namer")
+export const NAMER_SYMBOL = Symbol("Namer");
 
 @injectable()
 export class Namer {
-  private greeter: Greeter
+  private greeter: Greeter;
 
   public constructor(@inject(GREETER_SYMBOL) greeter: Greeter) {
-    this.greeter = greeter
+    this.greeter = greeter;
   }
 
   public greetWith(name: string) {
-    return `${name} ${this.greeter.greet()}`
+    return `${name} ${this.greeter.greet()}`;
   }
 }

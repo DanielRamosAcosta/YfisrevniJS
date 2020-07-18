@@ -1,6 +1,6 @@
 const TAG = {
   CHINESE: "CHINESE",
   JAPANESE: "JAPANESE",
-}
+};
 
-export default TAG
+export default TAG;

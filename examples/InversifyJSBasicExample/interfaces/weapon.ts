@@ -1,3 +1,3 @@
 export interface Weapon {
-  name: string
+  name: string;
 }
